@@ -3,6 +3,8 @@ import hashlib
 from bitcoinutils.transactions import Transaction
 import random
 
+random.seed(1)
+
 def gen_secret() -> str:
     """
         Replace this method with a secure random generator
