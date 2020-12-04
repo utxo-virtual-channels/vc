@@ -18,10 +18,10 @@ def main():
     id_b = Id(
         'e12046ad146a0f15bcf977c86181828f1e0472ea1bd2efe9af6362c8d53a41a7')  # addr: mnMpxq29PSL6nkT4WXBtKm1vKr6MmjPrWA
 
-    tx_in_a = TxInput('e570becc3a3969f90ca89569264e46f62b0cb47f034281cbaab7afd14c769290', 1)  # A in ai
-    tx_in_i1 = TxInput('40054f05fe9daade599b1e4ed1bda9e7b68b148b5a0ececcec939d91564ee99c', 1)  # I in ai
-    tx_in_i2 = TxInput('c186ff6cb70b2333edf977cea0038e432c081284a33bc0115884058d99b18e58', 0)  # I in ib
-    tx_in_b = TxInput('91fc5ca20e7e0762ba911b6aec9a1d3326c7b12f415f817fa5d3a7579d8cc56e', 1)  # B in ib
+    tx_in_a = TxInput('44ec7d9b38a49062d8641db2b106968f5cb0d418624b299693bce65553f6cddc', 0)  # A in ai
+    tx_in_i1 = TxInput('74d6c1e2d9054f26a5728000aeabdbbefa8f48a26e41743b8053ed6091f9d617', 0)  # I in ai
+    tx_in_i2 = TxInput('f67dd5c40299c9f86a426636033cc8d50caa9988dcff6fdec6cb650811562049', 0)  # I in ib
+    tx_in_b = TxInput('ed53838ff028b3688cc388cac130fc01f147eb5db7c27d3bac38a495c2ec14c4', 1)  # B in ib
 
     c = 0.00098
     f = 0.00001
@@ -71,9 +71,9 @@ def main():
                                         gen_secret())
     ct_LN_ai_i, script2 = txs.get_CT_LN(TxInput(ct_ai.get_txid(), 0), id_a, id_i, id_b, id_a, id_i, False, id_a, c, fee,
                                         gen_secret())
-    ct_LN_ib_i, script3 = txs.get_CT_LN(TxInput(ct_ai.get_txid(), 0), id_a, id_i, id_b, id_i, id_b, True, id_b, c, fee,
+    ct_LN_ib_i, script3 = txs.get_CT_LN(TxInput(ct_ib.get_txid(), 0), id_a, id_i, id_b, id_i, id_b, True, id_b, c, fee,
                                         gen_secret())
-    ct_LN_ib_b, script4 = txs.get_CT_LN(TxInput(ct_ai.get_txid(), 0), id_a, id_i, id_b, id_i, id_b, False, id_b, c, fee,
+    ct_LN_ib_b, script4 = txs.get_CT_LN(TxInput(ct_ib.get_txid(), 0), id_a, id_i, id_b, id_i, id_b, False, id_b, c, fee,
                                         gen_secret())
     print_tx(ct_LN_ai_a, 'ct_ai_LN_a (2x)')
     print_tx(ct_LN_ib_i, 'ct_LN_ib_i (2x)')

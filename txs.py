@@ -143,9 +143,9 @@ def get_CT_LN(tx_in: TxInput, id_a: Id, id_i: Id, id_b: Id, id_l: Id, id_r: Id, 
 
     script = scripts.get_script_ln_ct(id_a, id_b, id_i, id_punish_vc, id_punish, hash256(rev_secret), timedelay1,
                                       timedelay2)
-    tx_out0 = TxOutput(c - fee, script)
-    tx_out1 = TxOutput(c - fee, scripts.get_output_ln_ct(id_post, id_punish, hash256(rev_secret), timedelay1))
-    tx_out2 = TxOutput(c - fee, id_punish.p2pkh)
+    tx_out0 = TxOutput(c - 3*fee, script)
+    tx_out1 = TxOutput(fee, scripts.get_output_ln_ct(id_post, id_punish, hash256(rev_secret), timedelay1))
+    tx_out2 = TxOutput(fee, id_punish.p2pkh)
 
     tx = Transaction([tx_in], [tx_out0, tx_out1, tx_out2])
 
@@ -174,9 +174,9 @@ def get_CT_LN_val(tx_in: TxInput, id_l: Id, id_r: Id, ct_l: bool, id_punish_vc: 
 
     script = scripts.get_script_ln_ct_val(id_l, id_r, id_punish_vc, id_punish, hash256(rev_secret),
                                           timedelay1, timedelay2)
-    tx_out0 = TxOutput(c - fee, script)
-    tx_out1 = TxOutput(c - fee, scripts.get_output_ln_ct(id_post, id_punish, hash256(rev_secret), timedelay1))
-    tx_out2 = TxOutput(c - fee, id_punish.p2pkh)
+    tx_out0 = TxOutput(c - 3*fee, script)
+    tx_out1 = TxOutput(fee, scripts.get_output_ln_ct(id_post, id_punish, hash256(rev_secret), timedelay1))
+    tx_out2 = TxOutput(fee, id_punish.p2pkh)
 
     tx = Transaction([tx_in], [tx_out0, tx_out1, tx_out2])
 
@@ -190,7 +190,7 @@ def get_CT_LN_val(tx_in: TxInput, id_l: Id, id_r: Id, ct_l: bool, id_punish_vc: 
 def get_TXf_NV_LN(tx_in0: TxInput, tx_in1: TxInput, id_a: Id, id_b: Id, id_i: Id, c: float, f: float, fee: float, script1, script2,
                timedelay: int = 0x02) \
         -> Transaction:
-    tx_out0 = TxOutput(c, Script([
+    tx_out0 = TxOutput(c-3*fee, Script([
         id_a.pk.to_hex(), 'OP_CHECKSIGVERIFY', id_b.pk.to_hex(), 'OP_CHECKSIGVERIFY', 0x1]))
     tx_out1 = TxOutput(c + f / 2, id_i.p2pkh)
 
@@ -205,14 +205,14 @@ def get_TXf_NV_LN(tx_in0: TxInput, tx_in1: TxInput, id_a: Id, id_b: Id, id_i: Id
     sig_b1 = id_b.sk.sign_input(tx, 1, script2)
     sig_i1 = id_i.sk.sign_input(tx, 1, script2)
 
-    tx_in0.script_sig = Script([sig_i, sig_b, sig_a, 0x0])
-    tx_in1.script_sig = Script([sig_i1, sig_b1, sig_a1, 0x0])
+    tx_in0.script_sig = Script([0x0, sig_a, sig_i, sig_b, 0x0])
+    tx_in1.script_sig = Script([0x0, sig_a1, sig_i1, sig_b1, 0x0])
 
     return tx
 
 def get_TXf_V_LN(tx_in: TxInput, id_a: Id, id_b: Id, id_i: Id, c: float, f: float, fee: float, script: Script, timedelay: int = 0x02) \
         -> Transaction:
-    tx_out0 = TxOutput(c, Script([
+    tx_out0 = TxOutput(c-3*fee, Script([
         id_a.pk.to_hex(), 'OP_CHECKSIGVERIFY', id_b.pk.to_hex(), 'OP_CHECKSIGVERIFY', 0x1]))
     tx_out1 = TxOutput(f / 2, id_i.p2pkh)
 
@@ -229,7 +229,7 @@ def get_TXf_V_LN(tx_in: TxInput, id_a: Id, id_b: Id, id_i: Id, c: float, f: floa
 def get_TXrefund_V_LN(tx_in0: TxInput, tx_in1: TxInput, id_a: Id, id_b: Id, id_i: Id, c: float, f: float, fee: float, script: Script,
                    timedelay: int = 0x02) \
         -> Transaction:
-    tx_out = TxOutput(c + f, id_i.p2pkh)
+    tx_out = TxOutput(c + f-3*fee, id_i.p2pkh)
 
     tx = Transaction([tx_in0, tx_in1], [tx_out])
 
