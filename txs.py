@@ -221,7 +221,7 @@ def get_TXf_V_LN(tx_in: TxInput, id_a: Id, id_b: Id, id_i: Id, c: float, f: floa
     sig_a = id_a.sk.sign_input(tx, 0, script)
     sig_i = id_i.sk.sign_input(tx, 0, script)
 
-    tx_in.script_sig = Script([sig_a, sig_i, 0x0])
+    tx_in.script_sig = Script([0x0, sig_a, sig_i, 0x0])
 
     return tx
 
@@ -240,6 +240,6 @@ def get_TXrefund_V_LN(tx_in0: TxInput, tx_in1: TxInput, id_a: Id, id_b: Id, id_i
     sig_b = id_b.sk.sign_input(tx, 1, script)
 
     tx_in0.script_sig = Script([sig_i, id_i.pk.to_hex()])
-    tx_in1.script_sig = Script([sig_i2, sig_b, 0x0])
+    tx_in1.script_sig = Script([0x0, sig_i2, sig_b, 0x0])
 
     return tx

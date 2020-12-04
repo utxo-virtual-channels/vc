@@ -18,10 +18,10 @@ def main():
     id_b = Id(
         'e12046ad146a0f15bcf977c86181828f1e0472ea1bd2efe9af6362c8d53a41a7')  # addr: mnMpxq29PSL6nkT4WXBtKm1vKr6MmjPrWA
 
-    tx_in_a = TxInput('44ec7d9b38a49062d8641db2b106968f5cb0d418624b299693bce65553f6cddc', 0)  # A in ai
-    tx_in_i1 = TxInput('74d6c1e2d9054f26a5728000aeabdbbefa8f48a26e41743b8053ed6091f9d617', 0)  # I in ai
-    tx_in_i2 = TxInput('f67dd5c40299c9f86a426636033cc8d50caa9988dcff6fdec6cb650811562049', 0)  # I in ib
-    tx_in_b = TxInput('ed53838ff028b3688cc388cac130fc01f147eb5db7c27d3bac38a495c2ec14c4', 1)  # B in ib
+    tx_in_a = TxInput('e6acdb32126079b06c1afffa255760b40bd7d90bdd7df59d2889fc1a6cdb5fc5', 1)  # A in ai
+    tx_in_i1 = TxInput('576e704a46ae7215310b5b9426383a1aeb0a47fd3f7b279d7a949495bf303d0b', 1)  # I in ai
+    tx_in_i2 = TxInput('eb23fde16f22e04d9250865dd131dae5b34c06c73b5ee15c4ef1dd32bf8cdf13', 1)  # I in ib
+    tx_in_b = TxInput('23dbc25c199686d2bcc0a3d7bb6310b9e984b0c6e37f9c4d3bced2aa66522d21', 0)  # B in ib
 
     c = 0.00098
     f = 0.00001
@@ -94,15 +94,16 @@ def main():
                                                 gen_secret())
     ct_LN_ai_i_val, script2 = txs.get_CT_LN_val(TxInput(ct_ai.get_txid(), 0), id_a, id_i, False, id_i, c, fee,
                                                 gen_secret())
-    ct_LN_ib_i_val, script3 = txs.get_CT_LN_val(TxInput(ct_ai.get_txid(), 0), id_i, id_b, True, id_b, c, fee,
+    ct_LN_ib_i_val, script3 = txs.get_CT_LN_val(TxInput(ct_ib.get_txid(), 0), id_i, id_b, True, id_b, c, fee,
                                                 gen_secret())
-    ct_LN_ib_b_val, script4 = txs.get_CT_LN_val(TxInput(ct_ai.get_txid(), 0), id_i, id_b, False, id_b, c, fee,
+    ct_LN_ib_b_val, script4 = txs.get_CT_LN_val(TxInput(ct_ib.get_txid(), 0), id_i, id_b, False, id_b, c, fee,
                                                 gen_secret())
-    print_tx(ct_LN_ai_a_val, 'ct_LN_ai_a_val (4x)')
+    print_tx(ct_LN_ai_a_val, 'ct_LN_ai_a_val (2x)')
+    print_tx(ct_LN_ib_i_val, 'ct_LN_ib_i_val (2x)')
 
-    txf_v_ai_a = txs.get_TXf_V_LN(TxInput(ct_LN_ai_a.get_txid(), 0), id_a, id_b, id_i, c - f - 2 * fee, f, fee, script1)
-    txf_v_ai_i = txs.get_TXf_V_LN(TxInput(ct_LN_ai_i.get_txid(), 0), id_a, id_b, id_i, c - f - 2 * fee, f, fee, script2)
-    print_tx(txf_v, 'txf_v (2x)')
+    txf_v_ai_a = txs.get_TXf_V_LN(TxInput(ct_LN_ai_a_val.get_txid(), 0), id_a, id_b, id_i, c - f - 2 * fee, f, fee, script1)
+    txf_v_ai_i = txs.get_TXf_V_LN(TxInput(ct_LN_ai_i_val.get_txid(), 0), id_a, id_b, id_i, c - f - 2 * fee, f, fee, script2)
+    print_tx(txf_v_ai_a, 'txf_v (2x)')
 
     txrefund_v_1 = txs.get_TXrefund_V_LN(TxInput(txf_v_ai_a.get_txid(), 1), TxInput(ct_LN_ib_i_val.get_txid(), 0), id_a,
                                          id_b, id_i,
