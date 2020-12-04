@@ -27,19 +27,15 @@ def main():
     f = 0.00001
     fee = 0.00001
 
-    # These transactions are the commitment transaction and would be replaced with real ones
+    # These transactions are the commitment transaction (GC) or funding transaction (KN) and would be replaced with
+    # real ones
     ct_ai = txs.get_TX_multisig(tx_in_a, tx_in_i1, id_a, id_i, c, fee)
     print_tx(ct_ai, 'ct_ai')
     ct_ib = txs.get_TX_multisig(tx_in_i2, tx_in_b, id_i, id_b, c, fee)
     print_tx(ct_ib, 'ct_ib')
 
-    ct_LN_ai_a, script = txs.get_CT_LN(TxInput(ct_ai.get_txid(), 0), id_a, id_i, id_b, id_a, id_i, True, id_a, c, fee,
-                                       gen_secret())
-    print_tx(ct_LN_ai_a, 'ct_ai_LN_a')
-
-    ct_LN_ai_a_val, script = txs.get_CT_LN_val(TxInput(ct_ai.get_txid(), 0), id_a, id_i, True, id_a, c, fee,
-                                               gen_secret())
-    print_tx(ct_LN_ai_a_val, 'ct_ai_LN_a_val')
+    ### GENERALIZED CHANNEL channels:
+    print('GC:')
 
     #### Transaction required for the Validity construction
     print('Validity')
@@ -66,9 +62,11 @@ def main():
                             c - 2 * f - 2 * fee, f, fee)
     print_tx(txf_nv, 'txf_nv')
 
-    ### LIGHTNING NETWORK:
+    ### LIGHTNING NETWORK channels:
 
-    ## Non-Validity:
+    print('LN-Channels')
+    print('Non-Validity')
+    #### Transaction required for the Non-Validity
     ct_LN_ai_a, script1 = txs.get_CT_LN(TxInput(ct_ai.get_txid(), 0), id_a, id_i, id_b, id_a, id_i, True, id_a, c, fee,
                                         gen_secret())
     ct_LN_ai_i, script2 = txs.get_CT_LN(TxInput(ct_ai.get_txid(), 0), id_a, id_i, id_b, id_a, id_i, False, id_a, c, fee,
@@ -90,7 +88,8 @@ def main():
                                  c - 2 * f - 2 * fee, f, fee, script2, script4)
     print_tx(txf_nv_1, 'txf_nv_1 (4x)')
 
-    ### Validity
+    print('Validity')
+    #### Transaction required for the Validity construction
     ct_LN_ai_a_val, script1 = txs.get_CT_LN_val(TxInput(ct_ai.get_txid(), 0), id_a, id_i, True, id_i, c, fee,
                                                 gen_secret())
     ct_LN_ai_i_val, script2 = txs.get_CT_LN_val(TxInput(ct_ai.get_txid(), 0), id_a, id_i, False, id_i, c, fee,
